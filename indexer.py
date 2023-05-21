@@ -1,4 +1,6 @@
 import os
+import sys
+from pathlib import Path
 import re
 import shutil
 from datetime import date
@@ -20,7 +22,12 @@ def getsongobject(file):
 
 albumlist = {}
 
-for root, dirs, files in os.walk(os.path.abspath(".")):
+if sys.platform.startswith('darwin'):
+    application_path = Path(os.path.dirname(os.path.abspath(__file__))).parent
+else:
+    application_path = os.path.abspath(".")
+
+for root, dirs, files in os.walk(application_path):
     for file in files:
         if file.endswith(".mp3") or file.endswith(".m4a") or file.endswith(".m4v"):
 
@@ -47,7 +54,10 @@ for root, dirs, files in os.walk(os.path.abspath(".")):
 
 
 # Print in text file
-with open('albumlist.txt', 'w') as output_file:
+out_path = os.path.join(application_path, "albumlist.txt")
+print(f"Write TXT file to: {out_path}")
+
+with open(out_path, 'w') as output_file:
     now = date.today()
 
     output_file.write("========= Album Catalog ===========\n")
@@ -61,7 +71,10 @@ with open('albumlist.txt', 'w') as output_file:
         number += 1
 
 # Print in csv file
-with open('albumlist.csv', 'w') as output_file:
+out_path = os.path.join(application_path, "albumlist.csv")
+print(f"Write CSV file to: {out_path}")
+
+with open(out_path, 'w') as output_file:
     output_file.write("Artist;Album\n")
     for album, artist in albumlist.items():
         output_file.write(f"{artist};{album}\n")

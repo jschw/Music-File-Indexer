@@ -1,0 +1,11 @@
+	pip install pyinstaller
+
+MacOS:
+	pyinstaller --onedir indexer.py
+
+
+Windows / Other:
+	pyinstaller --onefile indexer.py
+
+
+-> Onefile mode does not work under MacOS because Python is unable to determine the path under which the executable was stored. This is important for usage on removable devices like portable SSDs for example.
